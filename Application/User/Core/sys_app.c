@@ -98,18 +98,23 @@ void SystemApp_Init(void)
   /*Initialize timer and RTC*/
   UTIL_TIMER_Init();
 
+#if defined(DEBUG_DISABLED)
   /* Debug config : disable serial wires and DbgMcu pins settings */
-  //DBG_Disable();
+  DBG_Disable();
 
   /* Initializes the SW probes pins and the monitor RF pins via Alternate Function */
-  //DBG_ProbesInit();
+  DBG_ProbesInit();
 
+#endif
+
+#if !defined(DEBUG_DISABLED)
   /*Initialize the terminal */
   UTIL_ADV_TRACE_Init();
   UTIL_ADV_TRACE_RegisterTimeStampFunction(TimestampNow);
 
   /*Set verbose LEVEL*/
   UTIL_ADV_TRACE_SetVerboseLevel(VERBOSE_LEVEL);
+#endif
 
   /*Initialize the temperature and Battery measurement services */
   SYS_InitMeasurement();
@@ -141,7 +146,7 @@ void UTIL_SEQ_Idle(void)
 	/* USER CODE END UTIL_SEQ_Idle_1 */
 
 	// L'entrée en Low Power n'affecte pas le fonctionnement des boutons
-	//UTIL_LPM_EnterLowPower();
+	UTIL_LPM_EnterLowPower();
 
 	/* USER CODE BEGIN UTIL_SEQ_Idle_2 */
 
